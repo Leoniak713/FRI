@@ -5,9 +5,9 @@
 //! Header file for the input parameters of the Reflexxes Motion Library
 //! (Type I)
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, info@reflexxes.com\n
 //! \n

@@ -9,9 +9,9 @@
 //! easy-to-use joint position control interface through the KUKA
 //! Fast Research Interface of the Light-Weight Robot IV.
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -39,7 +39,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -126,6 +126,36 @@ public:
 	inline void SetCommandedJointPositions(const float *CommandedJointPositions)
 	{
 		return(this->FRI->SetCommandedJointPositions(CommandedJointPositions));
+	}
+
+// Added 2016-09-12: GetMeasuredCartPose and GetCommandedCartPose
+//  ---------------------- Doxygen info ----------------------
+//! \fn inline void GetMeasuredCartPose(float *MeasuredCartPose)
+//!
+//! \brief
+//! \copybrief FastResearchInterface::GetMeasuredCartPose()
+//!
+//! \details
+//! \copydetails FastResearchInterface::GetMeasuredCartPose()
+//  ----------------------------------------------------------
+	inline void GetMeasuredCartPose(float *MeasuredCartPose)
+	{
+		return(this->FRI->GetMeasuredCartPose(MeasuredCartPose));
+	}
+
+
+//  ---------------------- Doxygen info ----------------------
+//! \fn inline void GetCommandedCartPose(float *CommandedCartPose)
+//!
+//! \brief
+//! \copybrief FastResearchInterface::GetCommandedCartPose()
+//!
+//! \details
+//! \copydetails FastResearchInterface::GetCommandedCartPose()
+//  ----------------------------------------------------------
+	inline void GetCommandedCartPose(float *CommandedCartPose)
+	{
+		return(this->FRI->GetCommandedCartPose(CommandedCartPose));
 	}
 
 };	// class LWRJointPositionController

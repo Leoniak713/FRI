@@ -9,9 +9,9 @@
 //! outputs by a low-priority thread. Basically, a real-time
 //! capable \c printf() function is provided.
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -198,50 +198,6 @@ public:
 
 protected:
 
-//  ---------------------- Doxygen info ----------------------
-//! \var bool ThreadCreated
-//!
-//! \brief
-//! This flag is set during the thread creation in order to acknowledge the
-//! creating thread.
-//  ----------------------------------------------------------
-	bool				ThreadCreated;
-
-
-//  ---------------------- Doxygen info ----------------------
-//! \var bool ConsoleThreadReadyToRun;
-//!
-//! \brief
-//! This flag is set by the main thread in order to acknowledge the console thread that
-//! it can run its loop.
-//  ----------------------------------------------------------
-	bool				ConsoleThreadReadyToRun;	
-
-
-//  ---------------------- Doxygen info ----------------------
-//! \var bool TermintateThread
-//!
-//! \brief
-//! If this flag is set by the destructor, and if the thread Console::ConsoleThreadMain()
-//! gets waked up by \c pthread_signal(), Console::ConsoleThreadMain() will terminate.
-//  ----------------------------------------------------------
-	bool				TermintateThread;
-
-
-//  ---------------------- Doxygen info ----------------------
-//! \var bool BufferNumber
-//!
-//! \brief
-//! Buffer selection variable
-//!
-//! \details
-//!  - \c false \f$ \longrightarrow \f$ first double buffer half
-//!  - \c true \f$ \longrightarrow \f$ second double buffer half
-//!
-//! This variable is protected by the mutex Console::Mutex.
-//  ----------------------------------------------------------
-	bool				BufferNumber;	
-
 
 //  ---------------------- Doxygen info ----------------------
 //! \var FILE *Handler
@@ -286,6 +242,31 @@ protected:
 //! in the double buffer Console::Buffer[2]
 //  ----------------------------------------------------------
 	unsigned int		NumberOfMessages[2];
+
+
+//  ---------------------- Doxygen info ----------------------
+//! \var bool TermintateThread
+//!
+//! \brief
+//! If this flag is set by the destructor, and if the thread Console::ConsoleThreadMain()
+//! gets waked up by \c pthread_signal(), Console::ConsoleThreadMain() will terminate.
+//  ----------------------------------------------------------
+	bool				TermintateThread;
+
+
+//  ---------------------- Doxygen info ----------------------
+//! \var bool BufferNumber
+//!
+//! \brief
+//! Buffer selection variable
+//!
+//! \details
+//!  - \c false \f$ \longrightarrow \f$ first double buffer half
+//!  - \c true \f$ \longrightarrow \f$ second double buffer half
+//!
+//! This variable is protected by the mutex Console::Mutex.
+//  ----------------------------------------------------------
+	bool				BufferNumber;
 
 
 //  ---------------------- Doxygen info ----------------------
@@ -336,6 +317,19 @@ protected:
 //! Console:Mutex.
 //  ----------------------------------------------------------
 	pthread_cond_t		CondVar;
+
+
+//  ---------------------- Doxygen info ----------------------
+//! \var pthread_barrier_t Barrier
+//!
+//! \brief
+//! Barrier for the start-up of the thread Console::ConsoleThreadMain()
+//!
+//! \details
+//! Ensures the thread that creates Console::ConsoleThreadMain() that
+//! Console::ConsoleThreadMain() is ready for operation.
+//  ----------------------------------------------------------
+	pthread_barrier_t	Barrier;
 
 
 //  ---------------------- Doxygen info ----------------------

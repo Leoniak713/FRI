@@ -92,7 +92,7 @@ public:
 //! \attention
 //! Calling of the constructor does \b not fulfill any real-time requirements.
 //  ----------------------------------------------------------
-	UDPSocket(void);
+	UDPSocket(const int PortNumber);
 	
 	
 //  ---------------------- Doxygen info ----------------------
@@ -149,6 +149,15 @@ public:
 	int ReceiveFRIDataFromKRC(FRIDataReceivedFromKRC *DataPackageFromKRC) const;
 
 
+	//  ---------------------- Doxygen info ----------------------
+	//! \var ServerPortNumber
+	//!
+	//! \brief
+	//! Contains the integer server port number
+	//  ----------------------------------------------------------	
+	int ServerPortNumber;
+
+
 protected:
 
 //  ---------------------- Doxygen info ----------------------
@@ -157,7 +166,7 @@ protected:
 //! \brief
 //! Initializes the socket (only called by the constructor)
 //  ----------------------------------------------------------
-	void Init(void);
+	void Init(const int ServerPortNumber);
 	
 	
 //  ---------------------- Doxygen info ----------------------
@@ -218,15 +227,6 @@ private:
 //! Contains the integer socket number
 //  ----------------------------------------------------------
 	int UDPSocketNumber ;
-	
-	
-//  ---------------------- Doxygen info ----------------------
-//! \var ServerPortNumber
-//!
-//! \brief
-//! Contains the integer server port number
-//  ----------------------------------------------------------	
-	int ServerPortNumber;
 	
 //  ---------------------- Doxygen info ----------------------
 //! \var IPAddressOfKRCUnit

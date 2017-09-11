@@ -9,9 +9,9 @@
 //! of the KUKA Light-Weight Robot IV. For details about the actual interface class (i.e.,
 //! class FastResearchInterface), please refer to the file FastResearchInterface.h.
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -39,7 +39,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 	memset(DesiredTorqueValues	, 0x0	, NUMBER_OF_JOINTS					* sizeof(float)	);
 
 #if defined(WIN32) || defined(WIN64) || defined(_WIN64)
-	FRI = new FastResearchInterface("E:\\Stanford\\Research\\SourceCode\\LWR_Public_2014\\etc\\980039-FRI-Driver.init");
+	FRI = new FastResearchInterface("C:\\Users\\Lucas\\Documents\\fri_projekty\\FRILibrary\\etc\\980039-FRI-Driver.init");
 #endif
 
 #ifdef __LINUX__
@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
 		printf("Please press any key...\n");
 
 		c	=	WaitForKBCharacter(NULL);
-		
+
 		printf("\n\n\n");
 
 		switch (c)
@@ -503,7 +503,7 @@ int main(int argc, char *argv[])
 			RunTrajectorySimple(FRI);
 			printf("Motion completed.\n");
 			break;
-			
+
 		case 'c':
 		case 'C':
 			printf("Moving to the candle position... (please wait)\n");

@@ -6,9 +6,9 @@
 //!
 //! \sa TypeIRML.h
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, info@reflexxes.com\n
 //! \n

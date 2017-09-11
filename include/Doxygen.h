@@ -4,9 +4,9 @@
 //! \brief
 //! Documentation file for Doxygen
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -359,8 +359,6 @@ DataLogging::OutputFileName). \n\n
 - Released under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank" >Apache V2</a>
 - Minor improvements and fixes
 - Re-implementation of UDP socket communication (cf. files UDPSocket.h, FRICommunication.h, UDPSocket.cpp)
-\section sec_VersionHistory5 Version 1.2 (December 2014)
-- Removed POSIX thread barriers to be compatible with MacOS
 
 
 */

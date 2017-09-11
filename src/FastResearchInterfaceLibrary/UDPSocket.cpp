@@ -53,21 +53,12 @@
 #pragma comment(lib, "ws2_32.lib") 
 #endif
 
-//  ---------------------- Doxygen info ----------------------
-//! \def SERVER_PORT
-//!
-//! \brief
-//! Default UDP server port
-//  ----------------------------------------------------------
-#define SERVER_PORT 49938
-
 
 // ****************************************************************
 // Constructor
 //
-UDPSocket::UDPSocket(void)
+UDPSocket::UDPSocket(const int PortNumber)
 {
-	this->ServerPortNumber	=	SERVER_PORT;
 
 	// --------------------------------------------
 	//! \todo Remove this.
@@ -81,7 +72,7 @@ UDPSocket::UDPSocket(void)
 #if defined(WIN32) || defined(WIN64) || defined(_WIN64)
 	StartWindowsSocket();
 #endif
-	this->Init();
+	this->Init(PortNumber);
 }
 
 
@@ -109,7 +100,7 @@ int UDPSocket::StartWindowsSocket(void)
 // ****************************************************************
 // Init()
 //
-void UDPSocket::Init(void)
+void UDPSocket::Init(const int ServerPortNumber)
 {
 	struct sockaddr_in		KRCAddress;
 	

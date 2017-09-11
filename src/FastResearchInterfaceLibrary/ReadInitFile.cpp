@@ -39,7 +39,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -127,6 +127,15 @@ int FastResearchInterface::ReadInitFile(const char *InitFileName)
 				if ( !stricmp (InitFileParser.GetName(), "LoggingFileName") )
 				{
 			   		strcpy(this->LoggingFileName, InitFileParser.GetValue() );
+					ParameterCount++;
+				}
+			}
+
+			if (!stricmp(InitFileParser.GetSection(), "ServerPort"))
+			{
+				if (!stricmp(InitFileParser.GetName(), "PortNumber"))
+				{
+					this->PortNumber = atoi(InitFileParser.GetValue());
 					ParameterCount++;
 				}
 			}

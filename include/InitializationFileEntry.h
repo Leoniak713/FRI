@@ -9,9 +9,9 @@
 //! entries from an initialization file and to provide in an
 //! application.
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n

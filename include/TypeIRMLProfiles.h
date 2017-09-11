@@ -5,9 +5,9 @@
 //! Header file for the calculation of all motion
 //! profiles for the Type I On-Line Trajectory Generation algorithm
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, info@reflexxes.com\n
 //! \n

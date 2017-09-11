@@ -40,7 +40,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -58,7 +58,7 @@
 
 
 #if defined(WIN32) || defined(WIN64) || defined(_WIN64)// \ToDo Make this clean through the OSAbstraction
-#include <Windows.h>	
+#include <Windows.h>
 #endif
 
 
@@ -73,26 +73,27 @@ void* FastResearchInterface::KRCCommunicationThreadMain(void *ObjectPointer)
 
 	float							ZeroVector[NUMBER_OF_JOINTS];
 
-	UDPSocket 						KRC;
-
 	FRIDataReceivedFromKRC 			LocalReadData;
 
 	FRIDataSendToKRC				LocalCommandData;
 
 	FastResearchInterface			*ThisObject						=	(FastResearchInterface*)ObjectPointer;
 
+	UDPSocket 						KRC								=	UDPSocket(ThisObject->PortNumber);
+
 	memset(ZeroVector, 0x0, NUMBER_OF_JOINTS * sizeof(float));
-	
+
 #if defined(WIN32) || defined(WIN64) || defined(_WIN64)
 	// \ToDo Make this clean through the OSAbstraction
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
-#endif	
+#endif
 
 	pthread_mutex_lock(&(ThisObject->MutexForThreadCreation));
 	ThisObject->ThreadCreated	=	true;
 	pthread_mutex_unlock(&(ThisObject->MutexForThreadCreation));
 
 	pthread_cond_signal(&(ThisObject->CondVarForThreadCreation));
+
 
 	for(;;)
 	{
@@ -156,7 +157,7 @@ void* FastResearchInterface::KRCCommunicationThreadMain(void *ObjectPointer)
 	}
 
 	pthread_exit(NULL);
-	
+
 	return (NULL);
 }
 

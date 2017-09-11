@@ -10,9 +10,9 @@
 //! function is provided. For further details, please refer to
 //! the file Console.h
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -72,11 +72,11 @@ Console::Console(		const unsigned int 	&Priority
 	pthread_attr_t			ThreadAttributes;
 
 	TermintateThread		=	false;
-	ThreadCreated			=	false;
-	ConsoleThreadReadyToRun	=	false;
 
 	pthread_mutex_init		(&(this->Mutex)		, NULL);
 	pthread_cond_init		(&(this->CondVar)	, NULL);
+
+	pthread_barrier_init(&(this->Barrier) , NULL, 2);
 
 	ThreadSchedulingParams.sched_priority	=	Priority;
 
@@ -89,15 +89,9 @@ Console::Console(		const unsigned int 	&Priority
 				   	,	&ThreadAttributes
 				   	,	&ConsoleThreadMain
 				   	,	this);
-				   	
-	pthread_mutex_lock(&(this->Mutex));
 
-	while (!ThreadCreated)
-	{
-		pthread_cond_wait (&(this->CondVar), &(this->Mutex));
-	}
-
-	pthread_mutex_unlock(&(this->Mutex));				   	
+	pthread_barrier_wait	(&(this->Barrier));
+	pthread_barrier_destroy	(&(this->Barrier));
 
 	memset(this->Buffer, 0x0, 		2
 		   	   	   	   	   	   *	CONSOLE_NUMBER_OF_BUFFER_ENTRIES
@@ -113,12 +107,6 @@ Console::Console(		const unsigned int 	&Priority
 
 
 	this->Handler				=	(FILE*)FileHandler;
-	
-	pthread_mutex_lock(&(this->Mutex));
-	this->ConsoleThreadReadyToRun	=	true;
-	pthread_mutex_unlock(&(this->Mutex));
-
-	pthread_cond_signal(&(this->CondVar));	
 }
 
 
@@ -184,20 +172,7 @@ void* Console::ConsoleThreadMain(void* ObjectPointer)
 	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_LOWEST);
 #endif	
 	
-	pthread_mutex_lock(&(ThisObjectPtr->Mutex));
-	ThisObjectPtr->ThreadCreated	=	true;
-	pthread_mutex_unlock(&(ThisObjectPtr->Mutex));
-
-	pthread_cond_signal(&(ThisObjectPtr->CondVar));
-
-	pthread_mutex_lock(&(ThisObjectPtr->Mutex));
-
-	while (!ThisObjectPtr->ConsoleThreadReadyToRun)
-	{
-		pthread_cond_wait (&(ThisObjectPtr->CondVar), &(ThisObjectPtr->Mutex));
-	}
-
-	pthread_mutex_unlock(&(ThisObjectPtr->Mutex));
+	pthread_barrier_wait(&(ThisObjectPtr->Barrier));
 
 	for(;;)
 	{

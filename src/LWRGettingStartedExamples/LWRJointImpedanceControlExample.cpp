@@ -11,9 +11,9 @@
 //! interface class (i.e., class LWRJointImpedanceController), please
 //! refer to the file LWRJointImpedanceController.h.
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -41,7 +41,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -62,6 +62,10 @@
 
 #define RUN_TIME_IN_SECONDS		10.0
 
+#ifndef PI
+#define PI	3.1415926535897932384626433832795
+#endif
+
 
 //*******************************************************************************************
 // main()
@@ -73,21 +77,24 @@ int main(int argc, char *argv[])
 
 	int							ResultValue		=	0;
 
-	float						CommandedTorquesInNm	[NUMBER_OF_JOINTS]
+	float						FunctionValue	=	0.0
+							,	LoopVariable	=	0.0
+                            ,   CommandedTorquesInNm	[NUMBER_OF_JOINTS]
 		 					,	CommandedStiffness		[NUMBER_OF_JOINTS]
 		 					,	CommandedDamping		[NUMBER_OF_JOINTS]
 		 					,	MeasuredTorquesInNm		[NUMBER_OF_JOINTS]
-		 					,	JointValuesInRad		[NUMBER_OF_JOINTS];
+		 					,	JointValuesInRad		[NUMBER_OF_JOINTS]
+		 					,	InitialJointValuesInRad[NUMBER_OF_JOINTS];
 
 	LWRJointImpedanceController	*Robot;
 
-	Robot	=	new LWRJointImpedanceController("/home/lwrcontrol/etc/980039-FRI-Driver.init");
+	Robot	=	new LWRJointImpedanceController("C:\\Users\\FRI\\Documents\\fri_projekty\\lwolinski\\FRILibrary\\etc\\980039-FRI-Driver.init");
 
 	fprintf(stdout, "RobotJointImpedanceController object created. Starting the robot...\n");
 
 	for (i = 0; i < NUMBER_OF_JOINTS; i++)
 	{
-		CommandedStiffness	[i]	=	(float)200.0;
+		CommandedStiffness	[i]	=	(float)0.1;//200.0;
 		CommandedDamping	[i]	=	(float)0.7;
 		CommandedTorquesInNm[i]	=	(float)0.0;
 	}
@@ -109,11 +116,11 @@ int main(int argc, char *argv[])
 
 	fprintf(stdout, "Current system state:\n%s\n", Robot->GetCompleteRobotStateAndInformation());
 
-	Robot->GetMeasuredJointPositions(JointValuesInRad);
+	Robot->GetCommandedJointPositions(InitialJointValuesInRad);
 
 	fprintf(stdout, "Performing joint impedance control for %.1f seconds.\n", RUN_TIME_IN_SECONDS);
 
-	while ((float)CycleCounter * Robot->GetCycleTime() < RUN_TIME_IN_SECONDS)
+	while /*(LoopVariable < 1.0 * PI)*/((float)CycleCounter * Robot->GetCycleTime() < RUN_TIME_IN_SECONDS)
 	{
 		Robot->WaitForKRCTick();
 
@@ -123,8 +130,17 @@ int main(int argc, char *argv[])
 			break;
 		}
 
+        FunctionValue	=	(float)(0.3 * sin(LoopVariable));
+		FunctionValue	*=	(float)FunctionValue;
+
+		CommandedTorquesInNm[0] = 0.7 * sin((float)CycleCounter * Robot->GetCycleTime() * PI / 5.0);
+
+		/*for (i = 0; i < NUMBER_OF_JOINTS; i++)
+		{
+			JointValuesInRad[i]	=	InitialJointValuesInRad[i] + FunctionValue;
+		}*/
 		Robot->GetMeasuredJointTorques		(MeasuredTorquesInNm	);
-		Robot->GetMeasuredJointPositions	(JointValuesInRad		);
+		Robot->GetCommandedJointPositions	(JointValuesInRad		);
 
 		Robot->SetCommandedJointPositions	(JointValuesInRad);
 		Robot->SetCommandedJointStiffness	(CommandedStiffness		);
@@ -132,6 +148,7 @@ int main(int argc, char *argv[])
 		Robot->SetCommandedJointTorques		(CommandedTorquesInNm	);
 
 		CycleCounter++;
+		LoopVariable	+=	(float)0.001;
 	}
 
 	fprintf(stdout, "Stopping the robot...\n");

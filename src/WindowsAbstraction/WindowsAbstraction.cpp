@@ -4,9 +4,9 @@
 //! \brief
 //! Implementation file containing OS-specific functions (for debug purposes).
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -34,7 +34,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -55,7 +55,7 @@ ULONGLONG						StoredSystemTimeInTicks;
 
 
 static bool						GetSystemTimeInSecondsCalledFirstTime	=	true;
-	
+
 
 
 // ****************************************************************
@@ -78,10 +78,10 @@ unsigned char WaitForKBCharacter(bool *Abort)
 		}
 		if (*Abort)
 		{
-			return(0);	
+			return(0);
 		}
 	}
-	
+
 	return(_getche());
 }
 
@@ -92,7 +92,7 @@ unsigned char CheckForKBCharacter(void)
 
 	if ( _kbhit() == 0 )
 	{
-		return(0);	
+		return(0);
 	}
 	else
 	{
@@ -107,11 +107,11 @@ float GetSystemTimeInSeconds(const bool &Reset)
 
 	if ( (GetSystemTimeInSecondsCalledFirstTime) || (Reset) )
 	{
-		StoredSystemTimeInTicks					=	GetTickCount64();
+		StoredSystemTimeInTicks					=	GetTickCount(); //GetTickCount64();
 		GetSystemTimeInSecondsCalledFirstTime	=	false;
 	}
-	
-	CurrentLocalMachineTime	=	GetTickCount64();
+
+	CurrentLocalMachineTime	=	GetTickCount(); //GetTickCount64();
 
 	return(0.001 * (float)(CurrentLocalMachineTime - StoredSystemTimeInTicks));
 }

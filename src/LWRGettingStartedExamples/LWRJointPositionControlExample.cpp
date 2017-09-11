@@ -11,9 +11,9 @@
 //! interface class (i.e., class LWRJointPositionController), please
 //! refer to the file LWRJointPositionController.h.
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -41,7 +41,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
 	LWRJointPositionController	*Robot;
 
-	Robot	=	new LWRJointPositionController("/home/lwrcontrol/etc/980039-FRI-Driver.init");
+	Robot	=	new LWRJointPositionController("C:\\Users\\FRI\\Documents\\fri_projekty\\lwolinski\\FRILibrary\\etc\\980039-FRI-Driver.init");
 
 	fprintf(stdout, "RobotJointPositionController object created. Starting the robot...\n");
 
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 
 	Robot->GetMeasuredJointPositions(InitialJointValuesInRad);
 
-	while (LoopVariable < 5.0 * PI)
+	while (LoopVariable < 5.0 * PI) //5.0
 	{
 		Robot->WaitForKRCTick();
 

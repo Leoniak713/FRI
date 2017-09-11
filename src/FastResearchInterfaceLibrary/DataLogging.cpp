@@ -10,9 +10,9 @@
 //! output file. For further details, please refer to the file
 //! DataLogging.h
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -40,7 +40,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -76,7 +76,7 @@
 
 
 // ****************************************************************
-// Constructor 
+// Constructor
 //
 DataLogging::DataLogging(		const char			*RobotName
 							,	const char			*LoggingPath
@@ -166,9 +166,9 @@ int DataLogging::PrepareLogging(		const unsigned int	&ControlScheme
 	//REMOVE
 
 	//------------------------
-	
-#ifdef _NTO_	
-	
+
+#ifdef _NTO_
+
 	struct _clockperiod 	ClockResolution;
 
 	ClockResolution.nsec = 10000;	//ns
@@ -176,7 +176,7 @@ int DataLogging::PrepareLogging(		const unsigned int	&ControlScheme
 
 	ClockPeriod(CLOCK_REALTIME, &ClockResolution, NULL, 0);
 	//------------------------
-	
+
 #endif
 
 	memset(		this->CompleteOutputFileString
@@ -260,9 +260,13 @@ void DataLogging::AddEntry(		const FRIDataReceivedFromKRC		&ReceivedFRIData
 		for (i = 0; i < NUMBER_OF_JOINTS; i++)
 		{
 			this->LoggingMemory[ 2 +						i][this->OutputCounter % this->MaximumNumberOfEntries] = 		ReceivedFRIData.MeasuredData.FRIMeasuredJointTorqueVectorInNm	[i]	;
-			this->LoggingMemory[ 2 + 1 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = DEG(	SentFRIData.CommandValues.FRICommandedJointPositionVectorInRad			[i]);
-			this->LoggingMemory[ 2 + 2 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = DEG(	ReceivedFRIData.MeasuredData.FRIMeasuredJointPositionVectorInRad	[i]);
-			this->LoggingMemory[ 2 + 3 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = DEG(	ReceivedFRIData.MeasuredData.FRICommandedJointPostionVectorFromKRC	[i]);
+			this->LoggingMemory[ 2 + 1 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = 		SentFRIData.CommandValues.FRICommandedJointPositionVectorInRad			[i];
+			this->LoggingMemory[ 2 + 2 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = 		ReceivedFRIData.MeasuredData.FRIMeasuredJointPositionVectorInRad	[i];
+			this->LoggingMemory[ 2 + 3 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = ReceivedFRIData.MeasuredData.FRIEstimatedExternalJointTorqueVectorInNm	[i];
+		}
+		for (i = 0; i < NUMBER_OF_FRAME_ELEMENTS; i++)
+		{
+			this->LoggingMemory[ 2 + 4 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries]	=	ReceivedFRIData.MeasuredData.FRIMeasuredCartesianFrame	[i];
 		}
 	}
 
@@ -285,10 +289,8 @@ void DataLogging::AddEntry(		const FRIDataReceivedFromKRC		&ReceivedFRIData
 			this->LoggingMemory[ 2 +   	 NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = DEG(	SentFRIData.CommandValues.FRICommandedJointPositionVectorInRad					[i]);
 			this->LoggingMemory[ 2 + 2 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = DEG(	ReceivedFRIData.MeasuredData.FRIMeasuredJointPositionVectorInRad			[i]);
 			this->LoggingMemory[ 2 + 3 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = DEG(	ReceivedFRIData.MeasuredData.FRICommandedJointPostionVectorFromKRC			[i]);
-			this->LoggingMemory[ 2 + 4 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = 		SentFRIData.CommandValues.FRICommandedJointStiffnessVectorInNmPerRad			[i]	;
-			this->LoggingMemory[ 2 + 5 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = 		SentFRIData.CommandValues.FRICommandedNormalizedJointDampingVector				[i]	;
-			this->LoggingMemory[ 2 + 6 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = 		SentFRIData.CommandValues.FRICommandedAdditionalJointTorqueVectorInNm				[i]	;
-			this->LoggingMemory[ 2 + 7 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = DEG(	ReceivedFRIData.MeasuredData.FRICommandedJointPostionOffsetVectorFromKRC	[i]);
+			this->LoggingMemory[ 2 + 4 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = 		SentFRIData.CommandValues.FRICommandedAdditionalJointTorqueVectorInNm				[i]	;
+			this->LoggingMemory[ 2 + 5 * NUMBER_OF_JOINTS + i][this->OutputCounter % this->MaximumNumberOfEntries] = DEG(	ReceivedFRIData.MeasuredData.FRICommandedJointPostionOffsetVectorFromKRC	[i]);
 		}
 	}
 
@@ -332,7 +334,7 @@ int DataLogging::WriteToFile(void)
 
 	//REMOVE
 	//------------------------
-#ifdef _NTO_		
+#ifdef _NTO_
 	struct _clockperiod 	ClockResolution;
 
 	ClockResolution.nsec = 1000000;	//ns
@@ -356,7 +358,7 @@ int DataLogging::WriteToFile(void)
 	switch (this->CurrentControlScheme)
 	{
 	case FastResearchInterface::JOINT_POSITION_CONTROL:
-		ElementsPerLine	=	2 + 4 * NUMBER_OF_JOINTS;
+		ElementsPerLine	=	2 + 4 * NUMBER_OF_JOINTS + NUMBER_OF_FRAME_ELEMENTS;
 		break;
 	case FastResearchInterface::CART_IMPEDANCE_CONTROL:
 		ElementsPerLine	=	2 + 3 * NUMBER_OF_CART_DOFS;

@@ -9,9 +9,9 @@
 //! to the KUKA Light-Weight Robot IV For details, please refer to the file
 //! FastResearchInterface.h.
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -99,11 +99,7 @@ void* FastResearchInterface::TimerThreadMain(void *ObjectPointer)
 	Timer.it_interval.tv_sec	=	0L;
 	Timer.it_interval.tv_nsec	=	(long int)(1000000000.0 * ThisObject->CycleTime);
 
-	pthread_mutex_lock(&(ThisObject->MutexForThreadCreation));
-	ThisObject->ThreadCreated	=	true;
-	pthread_mutex_unlock(&(ThisObject->MutexForThreadCreation));
-
-	pthread_cond_signal(&(ThisObject->CondVarForThreadCreation));
+	pthread_barrier_wait(&(ThisObject->BarrierForThreadCreation));
 
 	// Start the timer
 	timer_settime(TimerID, 0, &Timer, NULL);
@@ -151,11 +147,7 @@ void* FastResearchInterface::TimerThreadMain(void *ObjectPointer)
 
 	FastResearchInterface			*ThisObject		=	(FastResearchInterface*)ObjectPointer;
 
-	pthread_mutex_lock(&(ThisObject->MutexForThreadCreation));
-	ThisObject->ThreadCreated	=	true;
-	pthread_mutex_unlock(&(ThisObject->MutexForThreadCreation));
-
-	pthread_cond_signal(&(ThisObject->CondVarForThreadCreation));
+	pthread_barrier_wait(&(ThisObject->BarrierForThreadCreation));
 
 	pthread_mutex_lock(&(ThisObject->MutexForCondVarForTimer));
 

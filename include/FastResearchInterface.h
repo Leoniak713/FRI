@@ -38,7 +38,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -781,7 +781,7 @@ public:
 //! Reads current gravity vector (transformed into joint space) from the latest data telegram of the KRC unit
 //!
 //! \param GravityVector
-//! A pointer to an array of \c float values. The current gravity vector 
+//! A pointer to an array of \c float values. The current gravity vector
 //! in joint space is written into this array.
 //!
 //! \warning
@@ -1662,7 +1662,7 @@ protected:
 //! Used by FastResearchInterface::StartLogging() and FastResearchInterface::StopLogging()
 //  ----------------------------------------------------------
 	bool					LoggingIsActive;
-	
+
 
 //  ---------------------- Doxygen info ----------------------
 //! \var bool ThreadCreated
@@ -1674,7 +1674,7 @@ protected:
 //! \sa MutexForThreadCreation
 //! \sa CondVarForThreadCreation
 //  ----------------------------------------------------------
-	bool					ThreadCreated;	
+	bool					ThreadCreated;
 
 
 //  ---------------------- Doxygen info ----------------------
@@ -1750,6 +1750,17 @@ protected:
 //  ----------------------------------------------------------
 	unsigned int			NumberOfLoggingFileEntries;
 
+
+//  ---------------------- Doxygen info ----------------------
+//! \var unsigned int PortNumber
+//!
+//! \brief
+//! Contains the server port number used by UDP socket binded in the KRC communication thread (specified in the initialization file)
+//!
+//! \sa FastResearchInterface::KRCCommunicationThreadMain()
+//! \sa sec_InitFile
+//  ----------------------------------------------------------
+	unsigned int			PortNumber;
 
 //  ---------------------- Doxygen info ----------------------
 //! \var unsigned int PriorityKRCCommunicationThread
@@ -1834,7 +1845,7 @@ protected:
 //  ----------------------------------------------------------
 	pthread_mutex_t			MutexForLogging;
 
-	
+
 //  ---------------------- Doxygen info ----------------------
 //! \var pthread_mutex_t MutexForThreadCreation
 //!
@@ -1866,7 +1877,7 @@ protected:
 //  ----------------------------------------------------------
 	pthread_cond_t			CondVarForDataReceptionFromKRC;
 
-	
+
 //  ---------------------- Doxygen info ----------------------
 //! \var pthread_mutex_t CondVarForThreadCreation
 //!
@@ -1876,7 +1887,7 @@ protected:
 //! \sa ThreadCreated
 //! \sa MutexForThreadCreation
 //  ----------------------------------------------------------
-	pthread_cond_t			CondVarForThreadCreation;		
+	pthread_cond_t			CondVarForThreadCreation;
 
 
 //  ---------------------- Doxygen info ----------------------
@@ -1905,6 +1916,13 @@ protected:
 //  ----------------------------------------------------------
 	pthread_t				MainThread;
 
+//  ---------------------- Doxygen info ----------------------
+//! \var pthread_barrier_t BarrierForThreadCreation
+//!
+//! \brief
+//! Barrier used for safe thread creation
+//  ----------------------------------------------------------
+	pthread_barrier_t		BarrierForThreadCreation;
 
 //  ---------------------- Doxygen info ----------------------
 //! \var Console *OutputConsole

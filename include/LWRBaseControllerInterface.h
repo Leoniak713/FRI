@@ -13,9 +13,9 @@
 //!  - class LWRJointImpedanceController
 //!  - class LWRJointTorqueController
 //!
-//! \date December 2014
+//! \date March 2014
 //!
-//! \version 1.2
+//! \version 1.1
 //!
 //!	\author Torsten Kroeger, tkr@stanford.edu\n
 //! \n
@@ -43,7 +43,7 @@
 //! WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
 //! See the License for the specific language governing permissions and\n
 //! limitations under the License.\n
-//! 
+//!
 //  ----------------------------------------------------------
 //   For a convenient reading of this file's source code,
 //   please use a tab width of four characters.
@@ -184,6 +184,35 @@ public:
 		}
 	}
 
+
+//  ---------------------- Doxygen info ----------------------
+//! \fn inline int GetCommandedJointPositions(float *CommandedJointPositions)
+//!
+//! \brief
+//! \copybrief FastResearchInterface::GetCommandedJointPositions()
+//!
+//! \details
+//! \copydetails FastResearchInterface::GetCommandedJointPositions()
+//!
+//! \return
+//! <ul>
+//! <li> \c ENOTCONN if no connection between the remote host and the KRC unit exists.
+//! <li> \c EOK if no error occurred.
+//! </ul>
+//  ----------------------------------------------------------
+	inline int GetCommandedJointPositions(float *CommandedJointPositions)
+	{
+		this->FRI->GetCommandedJointPositions(CommandedJointPositions);
+
+		if (this->FRI->GetFRIMode() == FRI_STATE_OFF)
+		{
+			return(ENOTCONN);
+		}
+		else
+		{
+			return(EOK);
+		}
+	}
 
 //  ---------------------- Doxygen info ----------------------
 //! \fn inline int GetMeasuredJointTorques(float *MeasuredJointTorques)

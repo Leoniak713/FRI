@@ -1,7 +1,7 @@
 # Initialization file for the KUKA Fast Research Interface of the Light-Weight Robot IV
 
 [RobotName]
-Name=980039
+Name=Left
 
 [Priorities]
 #Priority range: 1..63
@@ -12,9 +12,12 @@ OutputConsoleThread=5
 
 [ControlValues]
 # Cycle time in seconds
-CycleTime=0.002
+CycleTime=0.001
 
 [Logging]
 NumberOfLoggingFileEntries=60000
-LoggingPath=C:\\Users\\FRI\\Documents\\fri_projekty\\lwolinski\\FRILibrary\\out
+LoggingPath=C:\\Users\\FRI\\Documents\\fri_projekty\\lwolinski\\FRILibraryDual\\out
 LoggingFileName=LWR-Scope.dat
+
+[ServerPort]
+PortNumber=49938
